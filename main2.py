@@ -27,8 +27,8 @@ trainDF['authorAge'] = (trainDF.takenon - trainDF.takenon.min()).astype('timedel
 #Author Credibility
 authorAge = trainDF.loc[:, ['author_id', 'takenon']].groupby('author_id').max() - trainDF.\
                loc[:, ['author_id', 'takenon']].groupby('author_id').min()
-trainDF = trainDF.merge(authorAge, how='inner', left_on='author_id', right_index=True)
-trainDF.takenon_y = trainDF.takenon_y.astype('timedelta64[D]')
+trainDF = trainDF.merge(authorAge, how='inner', left_on='author_id', right_index=True, suffixes=('_deltaTime','_inDays'))
+trainDF.takenon_inDays = trainDF.takenon_inDays.astype('timedelta64[D]')
 
 #Convert to DateTime64
 trainDF.votedon = pd.to_datetime(trainDF.votedon)
@@ -40,7 +40,7 @@ etitleD = pd.get_dummies(trainDF['etitle']).astype(bool)
 regionD = pd.get_dummies(trainDF['region']).astype(bool)
 
 #Split Dataset into Training and Testing
-selFeatures = ['n_comments', 'viewed', 'picAge', 'takenon_y']
+selFeatures = ['n_comments', 'viewed', 'picAge', 'takenon_inDays', 'author_id']
 X_train, X_test, y_train, y_test = tts((trainDF.loc[:, selFeatures].join(etitleD)).join(regionD),
                                        trainDF.logVotes, test_size=0.30, random_state=42)
 rfr = RFR()
