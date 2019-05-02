@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split as tts
 from sklearn.ensemble import RandomForestRegressor as RFR
-
+import pickle
 
 #IMPORT CSV
 TSV_FILE = "pictures-train.tsv"
@@ -48,6 +48,8 @@ rfr = RFR()
 rfr.fit(X_train, y_train)
 print('Training Score:',rfr.score(X_train, y_train))
 print('Testing Score:',rfr.score(X_test, y_test))
+with open('model.pickle','wb') as outfile:
+    pickle.dump(rfr, outfile, pickle.HIGHEST_PROTOCOL)
 
 with plt.xkcd():
     pieRegion = trainDF.groupby('region').size()
@@ -56,7 +58,7 @@ with plt.xkcd():
     plt.legend(pieRegionLabels.groups.keys(),bbox_to_anchor=(0,1),title='Region')
     plt.title('Distribution of Regions')
     plt.annotate('Is this informative?',xy=(0,0),xytext=(0,-1.2))
-    plt.savefig('Pie Regions 1.png',dpi=200)
+    plt.savefig('Pie Regions 1.png',dpi=200,bbox_inches='tight')
     plt.close()
 
 with plt.xkcd():
