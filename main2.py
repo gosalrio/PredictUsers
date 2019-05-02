@@ -39,11 +39,11 @@ trainDF['picAge'] = (trainDF.votedon - trainDF.votedon.min()).astype('timedelta6
 etitleD = pd.get_dummies(trainDF['etitle']).astype(bool)
 regionD = pd.get_dummies(trainDF['region']).astype(bool)
 
-#Split Dataset into Training and Testing
-selFeatures = ['n_comments', 'viewed', 'picAge', 'takenon_inDays', 'author_id']
-X_train, X_test, y_train, y_test = tts((trainDF.loc[:, selFeatures].join(etitleD)).join(regionD),
-                                       trainDF.logVotes, test_size=0.30, random_state=42)
-rfr = RFR()
-rfr.fit(X_train, y_train)
-print('Training Score:',rfr.score(X_train, y_train))
-print('Testing Score:',rfr.score(X_test, y_test))
+###Split Dataset into Training and Testing
+##selFeatures = ['n_comments', 'viewed', 'picAge', 'takenon_inDays', 'author_id']
+##X_train, X_test, y_train, y_test = tts((trainDF.loc[:, selFeatures].join(etitleD)).join(regionD),
+##                                       trainDF.logVotes, test_size=0.30, random_state=42)
+##rfr = RFR()
+##rfr.fit(X_train, y_train)
+##print('Training Score:',rfr.score(X_train, y_train))
+##print('Testing Score:',rfr.score(X_test, y_test))

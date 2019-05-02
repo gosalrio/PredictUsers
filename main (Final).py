@@ -85,7 +85,7 @@ with plt.xkcd():
     plt.xlabel('Log Number of Views')
     plt.ylabel('Number of Posts')
     plt.title('Distribution of Views')
-    plt.annotate('PRITTIEST TRAIN',xy=(trainDF['viewed'].max(),360),xytext=(2200,2500),
+    plt.annotate('PRETTIEST TRAIN',xy=(trainDF['viewed'].max(),360),xytext=(2200,2500),
                  arrowprops=dict(arrowstyle='->'))
     plt.savefig('Histogram of Views.png',dpi=200,bbox_inches='tight')
     plt.close()
