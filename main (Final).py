@@ -1,4 +1,5 @@
 #Import Modules
+#Jack 33%, Jackson 33%, Rio 33%, XKCD 1%
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -48,9 +49,12 @@ rfr = RFR()
 rfr.fit(X_train, y_train)
 print('Training Score:',rfr.score(X_train, y_train))
 print('Testing Score:',rfr.score(X_test, y_test))
+
+#pickle model
 with open('model.pickle','wb') as outfile:
     pickle.dump(rfr, outfile, pickle.HIGHEST_PROTOCOL)
 
+#pie chart of the distribution of posts by region
 with plt.xkcd():
     pieRegion = trainDF.groupby('region').size()
     pieRegionLabels = trainDF.groupby('region')
@@ -61,6 +65,7 @@ with plt.xkcd():
     plt.savefig('Pie Regions 1.png',dpi=200,bbox_inches='tight')
     plt.close()
 
+#pie chart of the distribution of posts by category
 with plt.xkcd():
     pieETitle = trainDF.groupby('etitle').size()
     pieETitleLabels = trainDF.groupby('etitle').groups.keys()
@@ -71,6 +76,7 @@ with plt.xkcd():
     plt.savefig('Pie Categories.png',dpi=200,bbox_inches='tight')
     plt.close()
 
+#Histogram of the distribution of the number of post w.r.t. number of upvotes received
 with plt.xkcd():
     plt.hist(trainDF['votes'],bins=20)
     plt.xlabel('Upvotes')
@@ -81,6 +87,7 @@ with plt.xkcd():
     plt.savefig('Histogram of Upvotes.png',dpi=200,bbox_inches='tight')
     plt.close()    
 
+#Histogram of the distribution of the log number of views w.r.t. number of post
 with plt.xkcd():
     plt.hist(trainDF['viewed'],bins=200)
     plt.xscale('log')
@@ -92,6 +99,7 @@ with plt.xkcd():
     plt.savefig('Histogram of Views.png',dpi=200,bbox_inches='tight')
     plt.close()
 
+#Histogram of the distribution of the log number of posts w.r.t. number of comments received
 with plt.xkcd(scale=1):
     plt.hist(trainDF['n_comments'],bins=100)
     plt.xscale('log')
@@ -103,11 +111,13 @@ with plt.xkcd(scale=1):
     plt.savefig('Histogram of Comments.png',dpi=200,bbox_inches='tight')
     plt.close()
 
+#Mean values for columns for each year
 trainDF['yearVoted'] = pd.DatetimeIndex(trainDF['votedon']).year
 meanForYearsDF = trainDF.groupby('yearVoted').mean()
 numPostPerYear = pd.DataFrame(trainDF.groupby(['yearVoted']).size())
 numPostPerYear.columns = ['num']
 
+#Combined line graph of the average number of (upvotes, views, comments, and posts) a year
 with plt.xkcd():
     plt.yscale('log')
     plt.plot(meanForYearsDF.index,meanForYearsDF['votes'])
@@ -121,7 +131,10 @@ with plt.xkcd():
     plt.savefig('Combined Plot.png',dpi=200,bbox_inches='tight')
     plt.close()
 
+#DF for the difference in the log number of upvotes between the predicted and true number of upvotes 
 newDF = pd.DataFrame({"Predicted Value":rfr.predict(X_test), "True Value":y_test})
+
+#Histogram of the difference in the log number of upvotes between the predicted and true number of upvotes 
 with plt.xkcd():
     plt.hist(newDF['True Value']-newDF['Predicted Value'],bins=50)
     plt.title('Difference Between True and Predicted Votes')
